@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuActivity1"
+        android:orderInCategory="100"
+        android:title="Activity 1" />
+    <item
+        android:id="@+id/menuActivity2"
+        android:orderInCategory="200"
+        android:title="Activity 2" />
+    <item
+        android:id="@+id/menuActivity3"
+        android:orderInCategory="300"
+        android:title="Activity 3" />
+    <item
+        android:id="@+id/menuActivity4"
+        android:orderInCategory="400"
+        android:title="Activity 4" />
+    <item
+        android:id="@+id/menuActivity5"
+        android:orderInCategory="500"
+        android:title="Activity 5" />
+    <item
+        android:id="@+id/menuActivity6"
+        android:orderInCategory="600"
+        android:title="Activity 6" />
+    <item
+        android:id="@+id/menuActivity7"
+        android:orderInCategory="700"
+        android:title="Activity 7" />
+    <item
+        android:id="@+id/menuActivity8"
+        android:orderInCategory="800"
+        android:title="Activity 8" />
+    <item
+        android:id="@+id/menuActivity9"
+        android:orderInCategory="900"
+        android:title="Activity 9" />
+</menu>
