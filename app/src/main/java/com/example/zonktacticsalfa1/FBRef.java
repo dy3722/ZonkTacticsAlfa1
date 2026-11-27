@@ -8,4 +8,5 @@ public class FBRef {
     public static StorageReference refStorage = storage.getReference();
     public static StorageReference refGallery = refStorage.child("Gallery");
     public static StorageReference refPhoto = refStorage.child("Photo");
+    public static StorageReference refJSON = refStorage.child("JSON");
 }
