@@ -16,6 +16,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.Calendar;
@@ -50,6 +51,16 @@ public class ThreeActivity extends MasterActivity {
         ALARM_RQST_CODE = alarmsPrefs.getInt("last_request_code", 0);
     }
 
+    private boolean hasNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return NotificationManagerCompat.from(this).areNotificationsEnabled();
+    }
+
     private void openTimePickerDialog(boolean is24r) {
         Calendar calendar = Calendar.getInstance();
 
@@ -73,13 +84,19 @@ public class ThreeActivity extends MasterActivity {
             calSet.set(Calendar.MILLISECOND, 0);
 
             if (calSet.compareTo(calNow) <= 0) {
-                calSet.add(Calendar.DATE, 1);
+                Toast.makeText(ThreeActivity.this, "השעה שנבחרה כבר עברה! נא לבחור שעה עתידית.", Toast.LENGTH_LONG).show();
+                return;
             }
             setAlarm(calSet);
         }
     };
 
     private void setAlarm(Calendar calSet) {
+        if (!hasNotificationPermission()) {
+            Toast.makeText(this, "אין הרשאה לשליחת התראות! ההתראה לא תתקבל.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         ALARM_RQST_CODE++;
         Intent intent = new Intent(this, AlarmReceiver.class);
         intent.putExtra("msg", msg);
@@ -113,6 +130,15 @@ public class ThreeActivity extends MasterActivity {
     }
 
     public void choseTime(View view) {
+        if (!hasNotificationPermission()) {
+            Toast.makeText(this, "אין הרשאה לשליחת התראות. לא ניתן להגדיר התראה!", Toast.LENGTH_LONG).show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+            return;
+        }
+
         msg = editTextTextForNoti.getText().toString();
         if (msg.trim().isEmpty()) {
             Toast.makeText(this, "נא להקליד תוכן להודעה לפני בחירת השעה", Toast.LENGTH_SHORT).show();
